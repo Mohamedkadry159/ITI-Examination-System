@@ -1,7 +1,8 @@
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com/?lines=ITI%2C+Examination+System+..;Information+Technology+Institute" />
+  <img src="https://readme-typing-svg.demolab.com/?lines=ITI%2C+Examination+System+..;Information+Technology+Institute&color=FF0000" />
 </p>
+
 
 ## 📌 Project Overview
 The **ITI Examination System** is a comprehensive platform designed to manage examination processes efficiently. It includes a well-structured database, automated data generation, robust data integrity measures, and advanced reporting through SSRS and Power BI. The system also features a desktop application built with C# to enhance user interaction.
