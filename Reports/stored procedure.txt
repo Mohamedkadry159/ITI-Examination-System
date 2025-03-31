@@ -1,0 +1,241 @@
+/*USE [Final_Project2]
+GO
+-- Object:  StoredProcedure [dbo].[GetInstructorCourses]    Script Date: 09/03/2025 3:50:01 PM 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetInstructorCourses]
+    @ins_id INT
+AS
+BEGIN
+    SELECT c.Name AS Course_Name, COUNT(s.stu_id) AS Student_Count
+    FROM Inst_Crs ic
+    JOIN course c ON ic.course_id = c.course_id
+    LEFT JOIN student s ON s.track_id in (SELECT track_id FROM Crs_Track WHERE course_id = c.course_id)
+    WHERE ic.ins_id = @ins_id
+    GROUP BY c.Name;
+END;*/
+USE [Final_Project2]
+GO
+/****** Object:  StoredProcedure [dbo].[GetInstructorCourses]    Script Date: 09/03/2025 3:50:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetInstructorCourses]
+    @ins_id INT
+AS
+BEGIN
+    SELECT 
+        I.name AS Instructor_Name,
+        D.name AS Department_Name,
+        /*T.name AS Track_Name,*/
+        c.Name AS Course_Name, 
+        COUNT(s.stu_id) AS Student_Count
+    FROM 
+        Inst_Crs ic
+    JOIN 
+        course c ON ic.course_id = c.course_id
+    JOIN 
+        Instructor I ON ic.ins_id = I.ins_id
+    JOIN 
+        Ins_Dep ID ON I.ins_id = ID.ins_id
+    JOIN 
+        Department D ON ID.Dept_id = D.Dept_id
+    /*JOIN 
+        Track T ON D.Dept_id = T.Dept_id*/
+    LEFT JOIN 
+        student s ON s.track_id IN (SELECT track_id FROM Crs_Track WHERE course_id = c.course_id)
+    WHERE 
+        ic.ins_id = @ins_id
+    GROUP BY 
+        I.name, D.name, c.Name;
+END;
+---------------------------------------------------------
+USE [Final_Project2]
+GO
+/****** Object:  StoredProcedure [dbo].[StudentCourseScores]    Script Date: 10/03/2025 1:44:11 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[StudentCourseScores]
+    @StudentID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        c.course_id,
+        c.name,
+        CAST(SUM(CASE 
+            WHEN qse.Stu_Answer = q.Question_ModelAnswer THEN 1 
+            ELSE 0 
+        END) * 100.0 / NULLIF(COUNT(q.Question_ID), 0) AS INT) 
+        AS NumericScore,
+
+        -- Score as text with % sign
+        CAST(CAST(SUM(CASE 
+            WHEN qse.Stu_Answer = q.Question_ModelAnswer THEN 1 
+            ELSE 0 
+        END) * 100.0 / NULLIF(COUNT(q.Question_ID), 0) AS INT) AS VARCHAR) + '%' 
+        AS GradePercentage
+    FROM 
+        Q_St_Ex qse
+    JOIN question q ON q.Question_ID = qse.que_id
+    JOIN Ins_Q_Exam iqe ON q.Question_ID = iqe.que_id
+    JOIN Inst_Crs ic ON iqe.ins_id = ic.ins_id
+    JOIN course c ON ic.course_id = c.course_id
+    WHERE 
+        qse.stu_id = @StudentID
+    GROUP BY 
+        c.course_id, c.name;
+END;
+
+--EXEC StudentCourseScores @StudentID = 368;
+--------------------------------------------------------
+/*USE [Final_Project2]
+GO
+-- Object:  StoredProcedure [dbo].[GetInstructorCourses]    Script Date: 09/03/2025 3:50:01 PM 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetInstructorCourses]
+    @ins_id INT
+AS
+BEGIN
+    SELECT c.Name AS Course_Name, COUNT(s.stu_id) AS Student_Count
+    FROM Inst_Crs ic
+    JOIN course c ON ic.course_id = c.course_id
+    LEFT JOIN student s ON s.track_id in (SELECT track_id FROM Crs_Track WHERE course_id = c.course_id)
+    WHERE ic.ins_id = @ins_id
+    GROUP BY c.Name;
+END;*/
+USE [Final_Project2]
+GO
+/****** Object:  StoredProcedure [dbo].[GetInstructorCourses]    Script Date: 09/03/2025 3:50:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetInstructorCourses]
+    @ins_id INT
+AS
+BEGIN
+    SELECT 
+        I.name AS Instructor_Name,
+        D.name AS Department_Name,
+        /*T.name AS Track_Name,*/
+        c.Name AS Course_Name, 
+        COUNT(s.stu_id) AS Student_Count
+    FROM 
+        Inst_Crs ic
+    JOIN 
+        course c ON ic.course_id = c.course_id
+    JOIN 
+        Instructor I ON ic.ins_id = I.ins_id
+    JOIN 
+        Ins_Dep ID ON I.ins_id = ID.ins_id
+    JOIN 
+        Department D ON ID.Dept_id = D.Dept_id
+    /*JOIN 
+        Track T ON D.Dept_id = T.Dept_id*/
+    LEFT JOIN 
+        student s ON s.track_id IN (SELECT track_id FROM Crs_Track WHERE course_id = c.course_id)
+    WHERE 
+        ic.ins_id = @ins_id
+    GROUP BY 
+        I.name, D.name, c.Name;
+END;
+---------------------------------------------------------
+USE [Final_Project2]
+GO
+/****** Object:  StoredProcedure [dbo].[GetCourseTopics]    Script Date: 10/03/2025 1:44:53 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetCourseTopics]
+    @course_id INT
+AS
+BEGIN
+    SELECT topic_name, c.Name as Course_name FROM Topic as t
+	join course as c
+	on t.course_id = c.course_id
+	WHERE c.course_id = @course_id;
+END;
+--------------------------------------------------------
+USE [Final_Project2]
+GO
+/****** Object:  StoredProcedure [dbo].[GetExamQuestions1]    Script Date: 10/03/2025 1:45:49 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetExamQuestions1]
+    @Exam_id INT
+AS
+BEGIN
+    WITH ChoicesRanked AS (
+        SELECT 
+            q.Question_ID,
+            q.Question,
+            c.Choice,
+            ROW_NUMBER() OVER (PARTITION BY q.Question_ID ORDER BY c.Choice_ID) AS ChoiceRank
+        FROM Question q
+        JOIN Ins_Q_Exam iqe ON q.Question_ID = iqe.que_id
+        LEFT JOIN Choices c ON q.Question_ID = c.Question_id
+        WHERE iqe.Exam_id = @Exam_id
+    )
+    SELECT 
+        q.Question_ID,
+        q.Question,
+        MAX(CASE WHEN cr.ChoiceRank = 1 THEN cr.Choice END) AS Choice1,
+        MAX(CASE WHEN cr.ChoiceRank = 2 THEN cr.Choice END) AS Choice2,
+        MAX(CASE WHEN cr.ChoiceRank = 3 THEN cr.Choice END) AS Choice3,
+        MAX(CASE WHEN cr.ChoiceRank = 4 THEN cr.Choice END) AS Choice4
+    FROM Question q
+    JOIN Ins_Q_Exam iqe ON q.Question_ID = iqe.que_id
+    LEFT JOIN ChoicesRanked cr ON q.Question_ID = cr.Question_ID
+    WHERE iqe.Exam_id = @Exam_id
+    GROUP BY q.Question_ID, q.Question;
+END;
+------------------------------------------------------------
+USE [Final_Project2]
+GO
+/****** Object:  StoredProcedure [dbo].[GetExamAnswer]    Script Date: 10/03/2025 1:46:32 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[GetExamAnswer]
+    @StudentID INT,
+    @ExamID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- تعريف المتغيرات داخل الإجراء وليس كبارامترات
+    DECLARE @T VARCHAR(50) = 'Correct Answer';
+    DECLARE @F VARCHAR(50) = 'Wrong Answer';
+
+    SELECT 
+        qse.stu_id, 
+        q.Question,
+		qse.stu_answer,
+        qse.Exam_ID,
+		
+        CASE
+            WHEN qse.Stu_Answer = q.Question_ModelAnswer THEN @T  
+            ELSE @F
+        END AS Answer_Status
+    FROM 
+        Q_St_Ex qse
+    JOIN 
+        question q ON qse.que_id = q.Question_ID
+    WHERE 
+        qse.stu_id = @StudentID 
+        AND qse.Exam_ID = @ExamID;  -- التصفية حسب الطالب والامتحان
+END;
