@@ -4,10 +4,10 @@
 </p>
 
 
-## 📌 Project Overview
+##  Project Overview
 The **ITI Examination System** is a comprehensive platform designed to manage examination processes efficiently. It includes a well-structured database, automated data generation, robust data integrity measures, and advanced reporting through SSRS and Power BI. The system also features a desktop application built with C# to enhance user interaction.
 
-## 📂 Features
+##  Features
 - **Database Design:** 
   - Entity-Relationship Diagram (ERD) for structured database modeling.
   - Well-defined relational database schema covering students, courses, exams, results, instructors, and other key entities.
@@ -45,13 +45,13 @@ The **ITI Examination System** is a comprehensive platform designed to manage ex
   - Developed using **C#** to facilitate user interaction and system management.
   - Features include student registration, exam scheduling, result processing, and report generation.
 
-## 🛠️ Technologies Used
+##  Technologies Used
 - **Database:** SQL Server
 - **Programming Language:** C# (.NET Framework / .NET Core)
 - **Reporting Tools:** SQL Server Reporting Services (SSRS), Power BI
 - **Development Tools:** Visual Studio, SQL Server Management Studio (SSMS)
 
-## 🚀 Installation & Setup
+##  Installation & Setup
 1. **Clone the Repository**
    ```bash
    ```
