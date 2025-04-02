@@ -65,3 +65,11 @@ The **ITI Examination System** is a comprehensive platform designed to manage ex
    - Load the Power BI reports and connect to the SQL Server database.
    - Configure SSRS for detailed report generation.
 
+----
+
+## = Contributors
+- **Doaa Ebrahim** *(https://github.com/d088)*
+- **Mohamed Kadry** *(https://github.com/Mohamedkadry159)*
+- **Taher Moaz** *(https://github.com/Taher-moaz)*
+- **Menna Elzeweidy** 
+
