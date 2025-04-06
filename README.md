@@ -72,6 +72,6 @@ The **ITI Examination System** is a comprehensive platform designed to manage ex
 - **Mohamed Kadry** *(https://github.com/Mohamedkadry159)*
 - **Taher Moaz** *(https://github.com/Taher-moaz)*
 - **Menna Elzeweidy**
-- **Taher Moaz** *(https://github.com/SaraEldamarany)*
+- **Sara ElDamarany** *(https://github.com/SaraEldamarany)*
 
 
